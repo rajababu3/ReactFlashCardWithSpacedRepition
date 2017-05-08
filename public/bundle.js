@@ -20842,6 +20842,10 @@ var App = function App(props) {
 
 var Sidebar = React.createClass({
   displayName: 'Sidebar',
+  componentDidUpdate: function componentDidUpdate() {
+    var el = ReactDOM.findDOMNode(this.refs.add);
+    if (el) el.focus();
+  },
   render: function render() {
     var _this = this;
 
@@ -20859,7 +20863,7 @@ var Sidebar = React.createClass({
         { onClick: function onClick(e) {
             return _this.props.showAddDeck();
           } },
-        'New Deck'
+        '  New Deck'
       ),
       React.createElement(
         'ul',
@@ -20878,10 +20882,9 @@ var Sidebar = React.createClass({
   },
   createDeck: function createDeck(evt) {
     if (evt.which !== 13) return;
-
     var name = ReactDOM.findDOMNode(this.refs.add).value;
     this.props.addDeck(name);
-    this.props.hideDeck();
+    this.props.hideAddDeck();
   }
 });
 
@@ -20896,13 +20899,12 @@ function run() {
       addDeck: function addDeck(name) {
         return store.dispatch(_addDeck(name));
       },
-      showAddDeck: function showAddDeck(name) {
+      showAddDeck: function showAddDeck() {
         return store.dispatch(_showAddDeck());
       },
-      hideAddDeck: function hideAddDeck(name) {
+      hideAddDeck: function hideAddDeck() {
         return store.dispatch(_hideAddDeck());
       }
-
     })
   ), document.getElementById('root'));
 }
