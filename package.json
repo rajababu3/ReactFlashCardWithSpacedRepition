@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "watchify src/app.js -o public/bundle.js -t [babelify --presets [ react es2015]]",
+    "build": "watchify src/app.js -o public/bundle.js -t [ babelify --presets [ react es2015 ] ]",
     "server": "cd public; live-server --port=1234 --entry-file=index.html"
   },
   "author": "Raja Babu",
@@ -15,8 +14,9 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^7.3.0",
     "live-server": "^1.2.0",
-    "react": "^0.14.8",
-    "react-dom": "^0.14.8",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-redux": "^5.0.4",
     "watchify": "^3.9.0"
   }
 }
