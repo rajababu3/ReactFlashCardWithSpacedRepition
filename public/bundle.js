@@ -1,0 +1,1 @@
+console.error("Error: Parsing file /Users/rajababu/ReactJs/flashcard-app/src/app.js: Unexpected token (23:4)");
