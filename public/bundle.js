@@ -23006,8 +23006,6 @@ var _Sidebar = require('./components/Sidebar');
 
 var _Sidebar2 = _interopRequireDefault(_Sidebar);
 
-var _actions = require('./actions');
-
 var _reducers = require('./reducers');
 
 var reducers = _interopRequireWildcard(_reducers);
@@ -23021,28 +23019,20 @@ var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers));
 function run() {
   var state = store.getState();
   _reactDom2.default.render(_react2.default.createElement(
-    _App2.default,
-    null,
-    _react2.default.createElement(_Sidebar2.default, {
-      decks: state.decks,
-      addingDeck: state.addingDeck,
-      addDeck: function addDeck(name) {
-        return store.dispatch((0, _actions.addDeck)(name));
-      },
-      showAddDeck: function showAddDeck() {
-        return store.dispatch((0, _actions.showAddDeck)());
-      },
-      hideAddDeck: function hideAddDeck() {
-        return store.dispatch((0, _actions.hideAddDeck)());
-      }
-    })
+    _reactRedux.Provider,
+    { store: store },
+    _react2.default.createElement(
+      _App2.default,
+      null,
+      _react2.default.createElement(_Sidebar2.default, null)
+    )
   ), document.getElementById('root'));
 }
 run();
 
 store.subscribe(run);
 
-},{"./actions":221,"./components/App":223,"./components/Sidebar":224,"./reducers":225,"react":210,"react-dom":44,"react-redux":179,"redux":216}],223:[function(require,module,exports){
+},{"./components/App":223,"./components/Sidebar":224,"./reducers":225,"react":210,"react-dom":44,"react-redux":179,"redux":216}],223:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23080,7 +23070,34 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactRedux = require('react-redux');
+
+var _actions = require('../actions');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref) {
+  var decks = _ref.decks,
+      addingDeck = _ref.addingDeck;
+  return {
+    decks: decks,
+    addingDeck: addingDeck
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    addDeck: function addDeck(name) {
+      return dispatch((0, _actions.addDeck)(name));
+    },
+    showAddDeck: function showAddDeck() {
+      return dispatch((0, _actions.showAddDeck)());
+    },
+    hideAddDeck: function hideAddDeck() {
+      return dispatch((0, _actions.hideAddDeck)());
+    }
+  };
+};
 
 var Sidebar = _react2.default.createClass({
   displayName: 'Sidebar',
@@ -23092,13 +23109,14 @@ var Sidebar = _react2.default.createClass({
     var _this = this;
 
     var props = this.props;
+
     return _react2.default.createElement(
       'div',
       { className: 'sidebar' },
       _react2.default.createElement(
         'h2',
         null,
-        ' All Decks'
+        ' All Decks '
       ),
       _react2.default.createElement(
         'button',
@@ -23114,7 +23132,6 @@ var Sidebar = _react2.default.createClass({
           return _react2.default.createElement(
             'li',
             { key: i },
-            ' ',
             deck.name
           );
         })
@@ -23130,9 +23147,9 @@ var Sidebar = _react2.default.createClass({
   }
 });
 
-exports.default = Sidebar;
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Sidebar);
 
-},{"react":210,"react-dom":44}],225:[function(require,module,exports){
+},{"../actions":221,"react":210,"react-dom":44,"react-redux":179}],225:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23169,15 +23186,13 @@ var cards = exports.cards = function cards(state, action) {
 
 var decks = exports.decks = function decks(state, action) {
   switch (action.type) {
+    case 'RECEIVE_DATA':
+      return action.data.decks || state;
     case 'ADD_DECK':
-      var newDeck = {
-        name: action.data,
-        id: +new Date()
-      };
+      var newDeck = { name: action.data, id: +new Date() };
       return state.concat([newDeck]);
     default:
       return state || [];
-
   }
 };
 

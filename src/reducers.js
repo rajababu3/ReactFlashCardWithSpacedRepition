@@ -19,23 +19,20 @@ export const cards = (state, action) => {
 
 export const decks = (state, action) => {
   switch (action.type) {
+    case 'RECEIVE_DATA':
+      return action.data.decks || state;
     case 'ADD_DECK':
-      let newDeck = {
-        name: action.data,
-        id: +new Date
-      };
+      let newDeck = { name: action.data, id: +new Date };
       return state.concat([newDeck]);
     default:
       return state || [];
-
   }
 };
 
 export const addingDeck = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case 'SHOW_ADD_DECK': return true;
     case 'HIDE_ADD_DECK': return false;
-    default: return !!state ;
+    default: return !!state;
   }
-
 };

@@ -4,23 +4,17 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux';
 import App from './components/App';
 import Sidebar from './components/Sidebar';
-import {addDeck, showAddDeck, hideAddDeck} from './actions';
 import * as reducers from './reducers';
 
 const store = createStore(combineReducers(reducers));
 
 function run() {
   let state = store.getState();
-ReactDOM.render((
+ReactDOM.render((<Provider store={store}>
   <App>
-    <Sidebar
-      decks={state.decks}
-      addingDeck={state.addingDeck}
-      addDeck = { name => store.dispatch(addDeck(name))}
-      showAddDeck = { () => store.dispatch(showAddDeck())}
-      hideAddDeck = { () => store.dispatch(hideAddDeck())}
-      />
-  </App>), document.getElementById('root')
+    <Sidebar    />
+  </App>
+  </Provider>), document.getElementById('root')
 );
 }
 run();
